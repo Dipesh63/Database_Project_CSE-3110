@@ -1,0 +1,83 @@
+Table SemesterPlan {
+  dept varchar
+  semester varchar
+  course_name varchar [primary key]
+  course_no varchar
+  year varchar
+}
+
+Table CoursePlan {
+  course_name varchar [primary key]
+  course_no varchar
+  teacher_name varchar
+  experence_year varchar
+  semester varchar
+  dept varchar 
+}
+
+Table StudentRegistration {
+  student_name varchar
+  roll int [primary key]
+  dept varchar
+  semester varchar
+  course_name varchar
+}
+
+Table StudentRegistrationBackUp {
+  student_name varchar
+  roll int [primary key]
+  dept varchar
+  semester varchar
+  course_name varchar 
+}
+
+Table EventHandling {
+  Event_name varchar [primary key]
+  Registration_Fees int
+  venue varchar
+  Event_Type varchar
+  Event_Date date
+}
+
+Table RegStudAtEvent {
+  Event_name varchar
+  Student_name varchar
+  roll int 
+  Payment_status char
+}
+Table EventFeedback {
+  Event_name varchar
+  Dept varchar
+  Roll int
+  CommentText varchar
+  CommentDate date
+}
+
+Table WorkshopHandling {
+  Workshop_name varchar [primary key]
+  Registration_Fees int
+  venue varchar
+  Workshop_Type varchar
+  Workshop_Date date
+}
+
+Table RegStudAtWorkshop {
+  Workshop_name varchar
+  Student_name varchar
+  roll int 
+  Payment_status char
+}
+
+ref:CoursePlan.course_name > SemesterPlan.course_name
+ref:StudentRegistration.course_name > CoursePlan.course_name
+ref:RegStudAtEvent.Event_name> EventHandling.Event_name
+ref:RegStudAtEvent.roll> StudentRegistration.roll
+ref:EventFeedback.Event_name >  EventHandling.Event_name
+ref:EventFeedback.roll >  StudentRegistration.roll
+ 
+
+ref:RegStudAtWorkshop. Workshop_name> WorkshopHandling. Workshop_name
+ref:RegStudAtWorkshop.roll> StudentRegistration.roll
+ref:StudentRegistrationBackUp.course_name>StudentRegistration.course_name
+
+

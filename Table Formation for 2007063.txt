@@ -1,0 +1,216 @@
+create table SemesterPlan(
+    dept varchar(100),
+    semester varchar(100),
+    course_name varchar(100),
+    course_no varchar(100),
+    year varchar(20),
+    primary key(course_name)
+    );
+
+
+create table CoursePlan(
+    course_name varchar(100),
+    course_no varchar(100),
+    teacher_name varchar(100),
+    experence_year varchar(100),
+    semester varchar(100),
+    primary key(course_name),
+    foreign key(course_name) references SemesterPlan(course_name)
+    on delete cascade
+    );
+
+
+create table StudentRegistration(
+    student_name varchar(100),
+    roll number(10),
+    dept varchar(100),
+    semester varchar(100),
+    course_name varchar(100),
+    primary key(roll),
+    foreign key(course_name) references CoursePlan(course_name)
+    on delete cascade
+    );
+
+
+create table EventHandling(
+    Event_name varchar(100),
+    Registration_Fees number(10),
+    venue varchar(100),
+    Event_Type varchar(100),
+    Event_Date Date,
+    primary key(Event_name)
+    );
+
+
+create table RegStudAtEvent(
+    Event_name varchar(100),
+    Student_name varchar(100),
+    roll number(10),
+    Payment_status char(10),
+    foreign key(Event_name) references EventHandling(Event_name),
+    foreign key(roll) references StudentRegistration(roll)
+    on delete cascade
+    );
+
+
+
+
+create table WorkshopHandling(
+    Workshop_name varchar(100),
+    Registration_Fees number(10),
+    venue varchar(100),
+    Workshop_Type varchar(100),
+    Workshop_Date Date,
+    primary key(Workshop_name)
+    );
+
+
+create table RegStudAtWorkshop(
+    Workshop_name varchar(100),
+    Student_name varchar(100),
+    roll number(10),
+    Payment_status char(10),
+    foreign key(Workshop_name) references WorkshopHandling(Workshop_name),
+    foreign key(roll) references StudentRegistration(roll)
+    on delete cascade
+    );
+
+
+create table EventFeedback(
+    Event_name varchar(100),
+    Dept varchar(50),
+    Roll number(7),
+    CommentText varchar(1000),
+    CommentDate Date;
+    
+    foreign key(Event_name) references EventHandling(Event_name),
+    foreign key(roll) references StudentRegistration(roll)
+    on delete cascade
+    );
+create table StudentRegistrationBackUp(
+    student_name varchar(100),
+    roll number(10),
+    dept varchar(100),
+    semester varchar(100),
+    course_name varchar(100),
+    primary key(roll),
+    foreign key(course_name) references CoursePlan(course_name)
+    on delete cascade
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Insert into SemesterPlan
+insert into SemesterPlan values ('Electrical Engineering', '3-1', 'Digital Signal Processing', 'EE3111', '3rd');
+insert into SemesterPlan values ('Computer Science', '4-2', 'Database Management Systems', 'CS4222', '4th');
+insert into SemesterPlan values ('Mechanical Engineering', '2-1', 'Engineering Mechanics', 'ME2111', '2nd');
+insert into SemesterPlan values ('Civil Engineering', '3-2', 'Structural Analysis', 'CE3222', '3rd');
+insert into SemesterPlan values ('Electronics Engineering', '1-1', 'Circuit Analysis', 'EE1111', '1st');
+
+-- Insert into CoursePlan
+insert into CoursePlan values ('Digital Signal Processing', 'EE3111', 'Faruk Sir', '5', '3-1');
+insert into CoursePlan values ('Database Management Systems', 'CS4222', 'Nadia Madam', '8', '4-2');
+insert into CoursePlan values ('Engineering Mechanics', 'ME2111', 'Kamal Sir', '3', '2-1');
+insert into CoursePlan values ('Structural Analysis', 'CE3222', 'Rohan Sir', '6', '3-2');
+insert into CoursePlan values ('Circuit Analysis', 'EE1111', 'Rita Madam', '2', '1-1');
+
+-- Insert into StudentRegistration
+insert into StudentRegistration values ('Tina', 2007102, 'Electrical Engineering', '3-1', 'Digital Signal Processing');
+insert into StudentRegistration values ('Sam', 2007403, 'Computer Science', '4-2', 'Database Management Systems');
+insert into StudentRegistration values ('Raj', 2007602, 'Mechanical Engineering', '2-1', 'Engineering Mechanics');
+insert into StudentRegistration values ('Priya', 2007803, 'Civil Engineering', '3-2', 'Structural Analysis');
+insert into StudentRegistration values ('Ankit', 2007004, 'Electronics Engineering', '1-1', 'Circuit Analysis');
+
+-- Insert into EventHandling
+insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('Seminar on AI', 50, 'Seminar Hall', 'Tech', TO_DATE('2024-11-15', 'YYYY-MM-DD'));
+insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('Web Development Workshop', 150, 'Computer Lab', 'Workshop', TO_DATE('2024-12-10', 'YYYY-MM-DD'));
+insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('Hackathon 2.0', 250, 'Online', 'Tech', TO_DATE('2025-01-20', 'YYYY-MM-DD'));
+insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('Robotics Expo', 100, 'Exhibition Center', 'Exhibition', TO_DATE('2025-02-05', 'YYYY-MM-DD'));
+insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('AI Conference', 200, 'Convention Center', 'Conference', TO_DATE('2025-03-15', 'YYYY-MM-DD'));
+
+
+
+
+
+-- Insert into RegStudAtEvent
+insert into RegStudAtEvent values ('Seminar on AI', 'Tina', 2007102, 'Paid');
+insert into RegStudAtEvent values ('Web Development Workshop', 'Sam', 2007403, 'UnPaid');
+insert into RegStudAtEvent values ('Hackathon 2.0', 'Raj', 2007602, 'Paid');
+insert into RegStudAtEvent values ('Robotics Expo', 'Priya', 2007803, 'UnPaid');
+insert into RegStudAtEvent values ('AI Conference', 'Ankit', 2007004, 'Paid');
+
+
+
+-- Insert into EventFeedback
+insert into EventFeedback values ('Seminar on AI', 'Electrical Engineering', 2007102, 'Informative session.', TO_DATE('2024-11-16', 'YYYY-MM-DD'));
+insert into EventFeedback values ('Web Development Workshop', 'Computer Science', 2007403, 'Practical insights provided.', TO_DATE('2024-12-11', 'YYYY-MM-DD'));
+insert into EventFeedback values ('Hackathon 2.0', 'Mechanical Engineering', 2007602, 'Great experience!', TO_DATE('2025-01-21', 'YYYY-MM-DD'));
+insert into EventFeedback values ('Robotics Expo', 'Civil Engineering', 2007803, 'Interesting exhibits.', TO_DATE('2025-02-06', 'YYYY-MM-DD'));
+insert into EventFeedback values ('AI Conference', 'Electronics Engineering', 2007004, 'Valuable discussions.', TO_DATE('2025-03-16', 'YYYY-MM-DD'));
+
+
+
+
+
+-- Insert into WorkshopHandling
+insert into WorkshopHandling (Workshop_name, Registration_Fees, venue, Workshop_Type, Workshop_Date)
+values ('Data Science Workshop', 200, 'Conference Hall', 'Skill Development', TO_DATE('2024-11-15', 'YYYY-MM-DD'));
+insert into WorkshopHandling (Workshop_name, Registration_Fees, venue, Workshop_Type, Workshop_Date)
+values ('Cybersecurity Training', 150, 'Lab 2', 'Training', TO_DATE('2024-12-10', 'YYYY-MM-DD'));
+insert into WorkshopHandling (Workshop_name, Registration_Fees, venue, Workshop_Type, Workshop_Date)
+values ('3D Printing Workshop', 100, 'Innovation Center', 'Design Medeling', TO_DATE('2025-01-20', 'YYYY-MM-DD'));
+insert into WorkshopHandling (Workshop_name, Registration_Fees, venue, Workshop_Type, Workshop_Date)
+values ('Mobile App Development', 250, 'Computer Lab', 'Tech', TO_DATE('2025-02-15', 'YYYY-MM-DD'));
+insert into WorkshopHandling (Workshop_name, Registration_Fees, venue, Workshop_Type, Workshop_Date)
+values ('Blockchain Basics', 300, 'Seminar Hall', 'Tech', TO_DATE('2025-03-15', 'YYYY-MM-DD'));
+
+-- Insert into RegStudAtWorkshop
+insert into RegStudAtWorkshop values ('Data Science Workshop', 'Tina', 2007102, 'Paid');
+insert into RegStudAtWorkshop values ('Cybersecurity Training', 'Sam', 2007403, 'Paid');
+insert into RegStudAtWorkshop values ('3D Printing Workshop', 'Raj', 2007602, 'UnPaid');
+insert into RegStudAtWorkshop values ('Mobile App Development', 'Priya', 2007803, 'Paid');
+insert into RegStudAtWorkshop values ('Blockchain Basics', 'Ankit', 2007004, 'UnPaid');
+
+
+
+
+commit;
+
+
+
+
+
+
+
+
+
+
+Extra-Insertion:------>
+
+1)insert into EventHandling (Event_name, Registration_Fees, venue, Event_Type, Event_Date)
+values ('Data Mining', 0, 'Convention Center', 'Conference', TO_DATE('2025-03-15', 'YYYY-MM-DD'));
+insert into RegStudAtEvent values ('Data Mining', 'Ankit', 2007004, 'Free');
+insert into RegStudAtEvent values ('Data Mining', 'Priya', 2007803, 'Free');
+
+
+
+
+
+
